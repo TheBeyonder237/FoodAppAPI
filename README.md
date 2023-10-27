@@ -2,7 +2,7 @@
 
 ## API de Publication de Recette
 
-Une API construite avec FastAPI et MongoDB pour gérer les opérations CRUD sur les recettes culinaires.
+Une API construite avec FastAPI et MongoDB pour gérer les opérations CRUD sur les recettes culinaires, un système d'abonnement utilisant l'API  de notchpay pour assurer le paiement.
 
 ---
 
