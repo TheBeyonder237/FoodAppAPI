@@ -71,7 +71,7 @@ L'API devrait être en cours d'exécution sur `http://127.0.0.1:8000`.
   - `GET /recipe/{recipe_id}`
 
 - **Mettre à jour une recette par ID**
-  - `PUT /recipes/{recette_id}`
+  - `PUT /recipes/{recipe_id}`
   - Payload (pour les champs que vous souhaitez mettre à jour):
     ```json
     {
@@ -84,7 +84,7 @@ L'API devrait être en cours d'exécution sur `http://127.0.0.1:8000`.
     ```
 
 - **Supprimer une recette par ID**
-  - `DELETE /recettes/{recette_id}`
+  - `DELETE /recipe/{recipe_id}`
     
 - **Il y a bien evidemment d'autres routes**
 ---
