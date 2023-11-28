@@ -30,12 +30,14 @@ async def get_ratings():
         return ResponseModel(ratings, "Ratings data retrieved successfully")
     return ResponseModel(ratings, "Empty list returned")
 
+
 @router.get("/{id}", response_description="Rating data retrieved")
 async def get_rating_data(id):
     rating = await retrieve_rating(id)
     if rating:
         return ResponseModel(rating, "Rating data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "Rating doesn't exist.")
+
 
 @router.put("/{id}")
 async def update_rating_data(id: str, req: UpdateRatingModel = Body(...)):
@@ -51,6 +53,7 @@ async def update_rating_data(id: str, req: UpdateRatingModel = Body(...)):
         404,
         "There was an error updating the rating data.",
     )
+
 
 @router.delete("/{id}", response_description="Rating data deleted from the database")
 async def delete_rating_data(id: str):

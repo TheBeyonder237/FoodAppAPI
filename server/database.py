@@ -3,10 +3,13 @@ from bson.objectid import ObjectId
 
 MONGO_DETAILS = "mongodb://localhost:27017"
 
+# Création du client MongoDB
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
+# Instanciation de la base données
 database = client.foodapp
 
+# Création des collections pour la base de données
 student_collection = database.get_collection("students_collection")
 user_collection = database.get_collection("users")
 follow_collection = database.get_collection("follow")
@@ -177,7 +180,6 @@ async def delete_student(id: str):
 
 
 # Pour l'utilisateur
-# Add a new user into the database
 # Récupérer tous les utilisateurs présents dans la base de données
 async def retrieve_users():
     users = []
@@ -251,8 +253,6 @@ async def retrieve_ratings_by_user(user_id: str):
 async def retrieve_favorites_by_user(user_id: str):
     favorites = []
     async for favorite in favorite_collection.find({"user_id": user_id}):
-        # Here we assume the favorite object contains a recipe_id field.
-        # You can retrieve the full recipe details if required.
         recipe = await recipe_collection.find_one({"_id": favorite["recipe_id"]})
         if recipe:
             favorites.append(recipe_helper(recipe))
@@ -625,6 +625,14 @@ async def retrieve_followers_of_user(followed_id: str):
 async def unfollow(follow_id: str):
     result = await follow_collection.delete_one({"_id": ObjectId(follow_id)})
     return result.deleted_count > 0
+
+
+# Retrieve all the follower by their username
+async def retrieve_follower_by_name(follower_username: str, follower_id: str):
+    followers = []
+    async for follow in follow_collection.find({"username": follower_username}):
+        if follow_collection.find({"follower_id": follower_id}) == user_collection.find({"user_id": follower_id}):
+            followers.append(follow["follower_username"])
 
 
 # Ensemble des fonctions CRUD pour les paiements
