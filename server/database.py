@@ -1,12 +1,14 @@
 import motor.motor_asyncio
 from bson.objectid import ObjectId
 
+#
 MONGO_DETAILS = "mongodb://localhost:27017"
+
 
 # Création du client MongoDB
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
-# Instanciation de la base données
+# Instanciation de la base de données
 database = client.foodapp
 
 # Création des collections pour la base de données
@@ -56,6 +58,7 @@ def payment_helper(payment) -> dict:
 def subscription_helper(subscription) -> dict:
     return {
         "id": str(subscription["_id"]),
+        "transaction_id": subscription["transaction_id"],
         "user_id": subscription["user_id"],
         "start_date": subscription["start_date"],
         "end_date": subscription["end_date"],
@@ -196,8 +199,8 @@ async def add_user(user_data: dict) -> dict:
 
 
 # Récupérer un utilisateur avec un ID correspondant
-async def retrieve_user(id: str) -> dict:
-    user = await user_collection.find_one({"_id": ObjectId(id)})
+async def retrieve_user(email: str) -> dict:
+    user = await user_collection.find_one({"email": email})
     if user:
         return user_helper(user)
 
@@ -302,8 +305,15 @@ async def add_recipe(recipe_data: dict) -> dict:
 
 
 # Retrieve a recipe with a matching ID
-async def retrieve_recipe(id: str) -> dict:
-    recipe = await recipe_collection.find_one({"_id": ObjectId(id)})
+async def retrieve_recipe(title: str) -> dict:
+    recipe = await recipe_collection.find_one({"title": title})
+    if recipe:
+        return recipe_helper(recipe)
+
+
+# Retrieve a recipe with the price of the recipe
+async def retrive_recipe_with_price(price: str) -> dict:
+    recipe = await ingredient_collection.find_one({"price": price})
     if recipe:
         return recipe_helper(recipe)
 
@@ -329,6 +339,7 @@ async def delete_recipe(id: str):
     if recipe:
         await recipe_collection.delete_one({"_id": ObjectId(id)})
         return True
+
 
 async def retrieve_recipes_from_followed_user(followed_id: str):
     recipes = []
@@ -727,9 +738,10 @@ async def delete_subscription(id: str):
 
 async def add_subscription_after_payment(payment: dict):
     subscription_data = {
+        "transaction_id": payment["transactionId"],
         "user_id": payment["user_id"],
-        "start_date": ... ,  # the start date logic
-        "end_date": ... ,    # the end date logic
+        "start_date": ...,  # the start date logic
+        "end_date": ...,  # the end date logic
         "is_active": True
     }
     await subscription_collection.insert_one(subscription_data)

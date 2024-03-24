@@ -103,4 +103,3 @@ async def callback_handler(request: Request):
         await add_subscription_after_payment(payment)
 
     return {"message": "Webhook processed successfully"}
-

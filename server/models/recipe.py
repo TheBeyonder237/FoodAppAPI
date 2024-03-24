@@ -19,7 +19,7 @@ class RecipeSchema(BaseModel):
             "example": {
                 "title": "Salade César",
                 "description": "Une salade classique et rafraîchissante",
-                "ingredients": [{"name": "Laitue", "quantity": "1", "description": "Grande"}],
+                "ingredients": [{"name": "Laitue", "prix": "15000"}],
                 "preparation_steps": ["Laver la laitue", "Mélanger tous les ingrédients"],
                 "cooking_time": 15,
                 "servings": 2,

@@ -5,15 +5,13 @@ from pydantic import BaseModel, Field
 
 class IngredientSchema(BaseModel):
     name: str = Field(...)
-    quantity: str = Field(...)
-    description: Optional[str]
+    price: str = Field(...)
 
     class Config:
         schema_extra = {
             "example": {
                 "name": "Tomate",
-                "quantity": "2",
-                "description": "Moyennes, mûres"
+                "price": "20100"
             }
         }
 

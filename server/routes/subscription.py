@@ -1,15 +1,11 @@
-from fastapi import APIRouter, Body
-from fastapi.encoders import jsonable_encoder
+from fastapi import APIRouter
 
 from server.database import (
     add_subscription,
-    search_users_by_criteria,
     delete_subscription,
     retrieve_subscriptions,
     update_subscription,
     retrieve_subscription,
-    retrieve_recipes_from_followed_user,
-    add_subscription_after_payment,
 
 )
 
@@ -26,7 +22,7 @@ router = APIRouter()
 
 # Créer un nouvel abonnement
 @router.post("/subscriptions/")
-async def create_subscription(subscription: SubscriptionSchema):
+async def create_subscription(transaction_id: str, subscription: SubscriptionSchema):
     new_subscription = await add_subscription(subscription.dict())
     if new_subscription:
         return ResponseModel(new_subscription, "Subscription created successfully.")

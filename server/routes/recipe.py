@@ -6,6 +6,7 @@ from server.database import (
     delete_recipe,
     retrieve_recipe,
     retrieve_recipes,
+    retrive_recipe_with_price,
     update_recipe,
     retrieve_favorite_recipes,
     retrieve_recipes_from_followed_user,
@@ -38,9 +39,9 @@ async def get_recipes():
     return ResponseModel(recipes, "Empty list returned")
 
 
-@router.get("/{id}", response_description="Recipe data retrieved")
-async def get_recipe_data(id):
-    recipe = await retrieve_recipe(id)
+@router.get("/{title}", response_description="Recipe data retrieved")
+async def get_recipe_data(title):
+    recipe = await retrieve_recipe(title)
     if recipe:
         return ResponseModel(recipe, "Recipe data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "Recipe doesn't exist.")

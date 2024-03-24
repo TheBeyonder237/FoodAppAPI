@@ -1,47 +1,54 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, constr, validator
 
 
-# Modèle principal de l'utilisateur
 class UserSchema(BaseModel):
     username: str = Field(...)
     email: EmailStr = Field(...)
     password: str = Field(...)
     fullname: str = Field(...)
     bio: Optional[str] = Field(...)
-    profile_image: Optional[str] = Field(...)
+    profile_image: Optional[str] = Field(default=None)
+
+    # Validation personnalisée pour profile_image
+    @validator('profile_image', pre=True, always=True)
+    def validate_base64_image(cls, v):
+        if v is not None:
+            import re
+            if not re.match(r'^data:image\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$', v):
+                raise ValueError('Invalid image format')
+        return v
 
     class Config:
         schema_extra = {
             "example": {
                 "username": "chefjohn",
-                "email": "[email protected]",
+                "email": "john@example.com",
                 "password": "securepassword123",
                 "fullname": "John Doe",
                 "bio": "Passionné de cuisine depuis l'âge de 10 ans.",
-                "profile_image": "url/to/profile/image.jpg",
+                "profile_image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAU... (très longue chaîne)",
             }
         }
 
 
-# Modèle pour mettre à jour l'utilisateur
 class UpdateUserModel(BaseModel):
     username: Optional[str]
     email: Optional[EmailStr]
     password: Optional[str]
     fullname: Optional[str]
     bio: Optional[str]
-    profile_image: Optional[str]
+    profile_image: Optional[str]  # Données d'image en base64
 
     class Config:
         schema_extra = {
             "example": {
                 "username": "masterchefjohn",
-                "email": "[email protected]",
+                "email": "john@newexample.com",
                 "password": "newsecurepassword123",
                 "fullname": "Johnathan Doe",
                 "bio": "Ma passion pour la cuisine a commencé très tôt.",
-                "profile_image": "url/to/new/profile/image.jpg",
+                "profile_image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD... (très longue chaîne)",
             }
         }
 

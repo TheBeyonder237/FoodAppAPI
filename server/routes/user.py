@@ -39,9 +39,9 @@ async def get_users():
     return ResponseModel(users, "Empty list returned")
 
 
-@router.get("/{id}", response_description="User data retrieved")
-async def get_user_data(id):
-    user = await retrieve_user(id)
+@router.get("/{email}", response_description="User data retrieved")
+async def get_user_data(email):
+    user = await retrieve_user(email)
     if user:
         return ResponseModel(user, "User data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "User doesn't exist.")
