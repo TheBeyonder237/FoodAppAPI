@@ -10,15 +10,6 @@ class UserSchema(BaseModel):
     bio: Optional[str] = Field(...)
     profile_image: Optional[str] = Field(default=None)
 
-    # Validation personnalisée pour profile_image
-    @validator('profile_image', pre=True, always=True)
-    def validate_base64_image(cls, v):
-        if v is not None:
-            import re
-            if not re.match(r'^data:image\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$', v):
-                raise ValueError('Invalid image format')
-        return v
-
     class Config:
         schema_extra = {
             "example": {
