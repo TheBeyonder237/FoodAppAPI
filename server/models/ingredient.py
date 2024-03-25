@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class IngredientSchema(BaseModel):
     name: str = Field(...)
-    price: str = Field(...)
+    price: int = Field(...)
 
     class Config:
         schema_extra = {
